@@ -11,7 +11,7 @@
             color: white;
             font-family: Arial, Helvetica, sans-serif;
             text-align: center;
-
+            font-size: 2em;
         }
     </style>
 </head>
@@ -21,9 +21,15 @@
         Nice one
     </p>
     <script>
-        alert("Hello")
-        confirm('is it working?')
-        prompt("Type if it's working")
+        nome = prompt("Nome:")
+        idade = prompt("Idade:")
+        notaUm = Number(prompt("Nota na prova 1:"))
+        notaDois = Number(prompt("Nota na prova 2:"))
+        notaTotal = notaUm + notaDois
+
+        alert(`${nome} tem ${idade} anos e no total tem ${notaTotal}`)
+        document.write(`<p>O aluno ${nome} tem ${idade} anos e no total tem ${notaTotal}</p>`)
+
     </script>
 </body>
 </html>
