@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de idade</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        body{
+            background-color: #5a6aff;
+        }
+        header{
+            padding: 10px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.403);
+        }
+        section{
+            background-color: white;
+            width: 400px;
+            padding: 10px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.359);
+        }
+        section label{
+            padding: 10px;
+        }
+        section >input{
+            margin: 10px;
+        }
+        section > div#texto{
+            padding: 5px;
+            color: black;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.308);
+        }
+        section > div#imagem{
+            display: none;
+            width: 250px;
+            height: 250px;
+            border-radius: 125px;
+            margin: auto;
+            line-height: 250px;
+            font-size: 2em;
+            color: white;
+            background-color: black;
+        }
+        footer{
+            padding: 10px;
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Verificador de idade</h1>
+    </header>
+    <section>
+        <div id="idade">
+            <label for="idate">Ano de nascimento:</label>
+            <input type="number" name="date" id="idate">
+        </div>
+
+        <div id="sexo">
+            <label for="sexo">Sexo:</label>
+            <input type="radio" name="sexo" id="Masculino" value="Masculino" checked><label for="sexo">Masculino</label>
+            <input type="radio" name="sexo" id="Feminino" value="Feminino"><label for="sexo">Feminino</label>
+        </div>
+
+        <input type="button" value="Verificar" onclick="check_data()">
+        
+        <div id="texto"></div>
+
+        <div id="imagem"></div>
+    </section>
+    <footer>
+        <p>Criado como exercício por min</p>
+    </footer>
+
+
+    <script>
+        var date = new Date()
+        var ano_atual = date.getFullYear()
+        var image = document.getElementById('imagem')
+        function check_data(){
+            var input_date = document.getElementById('idate')
+            var ano_nascimento = input_date.value
+            var idade = ano_atual - Number(ano_nascimento)
+            var text = document.getElementById('texto')
+            var input_gender = document.getElementsByName('sexo')
+            var gender = undefined
+
+            if(input_gender[0].checked){
+                gender = 'Homem'
+            }
+            else{
+                gender = 'Mulher'
+            }
+
+            text.innerHTML = `<p>Foi detectado ${gender} com ${idade} anos</p>`
+            if(idade < 0  || idade == ano_atual){
+                text.innerHTML = `<p>Idade invalida</p>`
+            }
+            else if(idade < 14){
+                image.style.display = 'block'
+                image.innerHTML = '<p>Criança</p>'
+            }
+            else if(idade < 20){
+                image.style.display = 'block'
+                image.innerHTML = '<p>Adolescente</p>'
+            }
+            else if(idade < 60){
+                image.style.display = 'block'
+                image.innerHTML = '<p>Adulto</p>'
+            }
+            else{
+                image.style.display = 'block'
+                image.innerHTML = '<p>Velho</p>'
+            }
+        }        
+    </script>
+</body>
+</html>
