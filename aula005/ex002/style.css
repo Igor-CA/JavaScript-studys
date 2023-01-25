@@ -1,0 +1,23 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+body {
+    background-color: #2d8aee;
+}
+header{
+    color: white;
+    text-align: center;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.477);
+}
+section{
+    padding: 10px;
+    background-color: white;
+    width: 500px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.375);
+}
+
+select{
+    margin: 10px;
+}
