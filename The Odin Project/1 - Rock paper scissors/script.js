@@ -1,19 +1,30 @@
 //Get user input
-function getUserInput(){
-    let input
-    do{
-        input = prompt() 
-    }while (input === null)
-    input = input.toLowerCase()
-    return input
-}
+let rockBtn = document.querySelector("#rock")
+let paperBtn = document.querySelector('#paper')
+let scissorsBtn = document.querySelector('#scissors')
+
+rockBtn.addEventListener('click', () => {
+    let userChoice = 'rock'
+    playRound(userChoice)
+    updateScore()
+})
+paperBtn.addEventListener('click', () => {
+    let userChoice = 'paper'
+    playRound(userChoice)
+    updateScore()
+})
+scissorsBtn.addEventListener('click', () => {
+    let userChoice = 'scissors'
+    playRound(userChoice)
+    updateScore()
+})
 
 function getPcChoince(){
     let options = ['rock', 'paper', 'scissors']
     return options[Math.floor(Math.random()*options.length)]
 }
 
-function playRound(userChoice, pcChoice){
+function checkWinner(userChoice, pcChoice){
     if(userChoice === pcChoice){ return `It's a draw, both choose ${userChoice}` }
     else if(userChoice === 'rock' && pcChoice === 'paper'){ return 'pc wins' }
     else if(userChoice === 'paper' && pcChoice === 'scissors'){ return 'pc wins' }
@@ -24,24 +35,30 @@ function playRound(userChoice, pcChoice){
     else { return `"${userChoice}" is not a valid input`}
 }
 
-let userPoints = 0
 let pcPoints = 0
+let playerPoints = 0
 
-for(let i=0; i<5; i++){
-    let user = getUserInput()
+function playRound(user){
     let pc = getPcChoince()
-    let round = playRound(user, pc)
-    if( round === 'pc wins'){
+    let result = checkWinner(user, pc)
+    let resultDiv = document.querySelector('#result')
+    if( result === 'pc wins'){
+        resultDiv.innerHTML = `You lose! ${pc} beats ${user}`
         console.log(`You lose! ${pc} beats ${user}`)
-        pcPoints++
+        pcPoints++;
     }
-    else if( round === 'player wins'){
+    else if( result === 'player wins'){
+        resultDiv.innerHTML = `You win! ${user} beats ${pc}`
         console.log(`You win! ${user} beats ${pc}`)
-        userPoints++
+        playerPoints++;
     }
-    else{ console.log(round) }
+    else{ 
+        resultDiv.innerHTML = result
+        console.log(result) 
+    }
 }
 
-if (userPoints > pcPoints){ console.log(`You win! ${userPoints} x ${pcPoints}`) }
-else if (userPoints < pcPoints) { console.log(`You lose! ${userPoints} x ${pcPoints}`) }
-else { console.log(`It's a draw! ${userPoints} x ${pcPoints}`) }
+function updateScore(){
+    let resultDiv = document.querySelector('#result')
+    resultDiv.innerHTML += `<br> <h2>Score</h2> PC ${pcPoints} x ${playerPoints} Jogador`
+}
