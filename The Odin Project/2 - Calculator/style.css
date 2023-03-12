@@ -4,6 +4,7 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body, html{
@@ -31,12 +32,16 @@ body{
 input[type="button"]{
     color: white;
     font-size: 2em;
+    border-radius: 10px;
 }
 .number{
     background-color: rgb(28, 138, 107);
 }
-.operators{
+.operators, #equal{
     background-color: orange;
+}
+.operators:focus{
+    background-color: rgb(255, 188, 63);
 }
 .comand{
     background-color: rgb(71, 158, 234);
