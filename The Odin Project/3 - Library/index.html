@@ -6,27 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="script.js" defer></script>
 </head>
 <body>
     <h1>Virtual library &#x1F4DA</h1>
     <input type="button" value="+ New Book" id="add">
     <section id="library">
-        <div class="book">
-            <p>Title</p>
-            <p>Author</p>
-            <p>Number of pages</p>
-            <input type="button" value="read" class="read">
-            <input type="button" value="remove" class="remove">
-        </div>
-        <div class="book">
-            <p>Title</p>
-            <p>Author</p>
-            <p>Number of pages</p>
-            <input type="button" value="not read" class="notRead">
-            <input type="button" value="remove" class="remove">
-        </div>
+        
+    </section>
 
+    <section id="form" class="invisible">
+        <button id="closeForm">
+            <i class="fa fa-close"></i>
+        </button>
+        <input type="text" name="name" id="name" placeholder="Title" autocomplete="off">
+        <input type="text" name="author" id="author" placeholder="Author" autocomplete="off">
+        <input type="number" name="pages" id="pages" placeholder="Number of pages" autocomplete="off">
+        <p>
+            <label for="status">Read:</label>
+            <input type="checkbox" name="status" id="status" autocomplete="off">
+        </p>
+        <input type="button" value="Add" id="confirmAdd">
     </section>
 </body>
 </html>
