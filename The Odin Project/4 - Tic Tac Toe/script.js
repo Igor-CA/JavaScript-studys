@@ -6,11 +6,13 @@ const Game = () =>{
         board.push(Cell());
     }
     
+    const getCurrentPlayer = () => currentPlayer
+
     const playRound = (index) =>{
         if(board[index].getValue() === null){
             board[index].addValue(currentPlayer);
+            checkForWin()
             togglePlayer();
-            checkForWin(index);
         }
     }
 
@@ -20,27 +22,50 @@ const Game = () =>{
 
     const getBoard = () => board
  
-    const checkForWin = (index) =>{
-        const line = Math.floor(index/3);
-        const column = index % 3;
+    const checkForWin = () =>{
+        let roundWon = false
+        const winCombinations = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+        ]
 
-        console.log({line, column})
-        if(board[(line*3)].getValue() === board[(line*3)+1].getValue() && board[(line*3)+1].getValue() === board[(line*3)+2].getValue()){
-            console.log('line equals')
+        for(let i=0; i<winCombinations.length; i++){
+            let combination = winCombinations[i]
+            let valA = board[combination[0]].getValue()
+            let valB = board[combination[1]].getValue()
+            let valC = board[combination[2]].getValue()
+
+            if(valA === null || valB === null || valC === null){
+                continue
+            }
+            if(valA === valB && valB === valC){
+                roundWon = true
+                break
+            }
+
         }
-        if(board[column].getValue() === board[column+3].getValue() && board[column].getValue() === board[column+6].getValue()){
-            console.log('column equals')
+
+        if(roundWon){
+            screenControler.showWhinner()
         }
-        if(board[0].getValue() === board[4].getValue() && board[0].getValue() === board[8].getValue() && board[4].getValue() !== null && board[0].getValue() !== null && board[8].getValue() !== null){
-            console.log('diagonals1 equals')
-        }
-        if(board[2].getValue() === board[4].getValue() && board[4].getValue() === board[6].getValue() && board[4].getValue() !== null && board[2].getValue() !== null && board[6].getValue() !== null){
-            console.log('diagonals2 equals')
+
+         //check for tie
+        let filledSquares = board.filter((square) => {
+            return square.getValue() !== null;
+        })
+        if(filledSquares.length == 9){
+            screenControler.showTie()
         }
 
     }
 
-    return{getBoard, checkForWin, playRound}
+    return{getBoard, getCurrentPlayer, checkForWin, playRound}
 }
 const Cell = ()=>{
     let value = null
@@ -58,16 +83,43 @@ const screenControler = (() =>{
     let game = Game()
     let boardDiv = document.querySelector('#board')
     
-    game.getBoard().forEach( (cell, index) =>{
-        let cellButton = document.createElement('button')
-        cellButton.dataset.coord = index
-        cellButton.addEventListener('click', () =>{
-            game.playRound(index)
-            cellButton.innerText = cell.getValue()
+    const init = () => {
+        createBoard()
+        addListerners()
+    }
+    
+    const createBoard = ()=>{
+        let board = game.getBoard()
+        board.forEach( (cell) => {
+            let cellButton = document.createElement('button')
+            cellButton.classList += 'cell'
+            cellButton.dataset.cord = board.indexOf(cell)
+            boardDiv.appendChild(cellButton)
         })
-        //console.log(cell.getValue())
-        boardDiv.appendChild(cellButton)
-    })
+    }
 
+    const addListerners = ()=>{
+        let boardCells = document.querySelectorAll('#board>.cell')
+        let board = game.getBoard()
+        boardCells.forEach( (cell) => {
+            let index = cell.dataset.cord
+            cell.addEventListener('click', ()=>{
+                game.playRound(index)
+                cell.textContent = board[index].getValue() 
+            })
+        })
+    }
+
+    const showWhinner = () => {
+        let header = document.querySelector('#turn')
+        header.textContent = `Jogador '${game.getCurrentPlayer()}' Ganhou`
+    }
+    const showTie = () => {
+        let header = document.querySelector('#turn')
+        header.textContent = `It's a Tie`
+    }
+
+    init()
+    return{ showWhinner, showTie }
 })();
 
