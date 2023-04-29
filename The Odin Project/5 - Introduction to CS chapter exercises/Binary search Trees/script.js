@@ -71,7 +71,88 @@ class Tree{
         }
         return node
     }
+    
+    height(node){
+        if(node === null)
+            return 0
+        let leftHeight = this.height(node.left)
+        let rightHeight = this.height(node.right)
+        return (leftHeight > rightHeight)? leftHeight+1 : rightHeight+1
+    }
 
+    depth(node){
+        let currentNode = this.root
+        let depth = 1
+        while(currentNode !== node)
+        if(node.data > currentNode.data){
+            currentNode = currentNode.right
+            depth++
+        }else if(node.data < currentNode.data){
+            currentNode = currentNode.left
+            depth++
+        }
+        return depth
+    }
+    levelOrder(iteratorFunction = console.log){
+        let queueArray = [this.root]
+        let currentNode = this.root
+        while(currentNode){
+            iteratorFunction(currentNode)
+            if(currentNode.left)
+                queueArray.push(currentNode.left)
+            if(currentNode.right)
+                queueArray.push(currentNode.right)
+            queueArray.shift()
+            currentNode = queueArray[0]
+        }
+        
+    }
+    preorder(iteratorFunction, node=this.root){
+        if(node === null) return node
+        iteratorFunction(node)
+        //console.log(node)
+        this.preorder(iteratorFunction, node.left)
+        this.preorder(iteratorFunction, node.right)
+        return node
+    }
+    
+    inorder(iteratorFunction, node=this.root){
+        if(node === null) return node
+        this.inorder(iteratorFunction, node.left)
+        iteratorFunction(node)
+        //console.log(node)
+        this.inorder(iteratorFunction, node.right)
+        return node
+    }
+    postorder(iteratorFunction, node=this.root){
+        if(node === null) return node
+        this.postorder(iteratorFunction, node.left)
+        this.postorder(iteratorFunction, node.right)
+        iteratorFunction(node)
+        //console.log(node)
+        return node
+    }
+    
+    isBalanced(node=this.root){
+        if(node === null) return true
+        let leftHeight = this.height(node.left)
+        let rightHeight = this.height(node.right)
+        let heightDifference = Math.abs(leftHeight - rightHeight)
+        if(heightDifference > 1){
+            return false
+        }else if(this.isBalanced(node.right) && this.isBalanced(node.left)){
+            return true
+        }
+        return false
+    }
+
+    rebalance(){
+        let elementsArray = []
+        this.inorder((element) => {
+            elementsArray.push(element.data)
+        })
+        this.root = this.buildTree(elementsArray)
+    }
     findNextRight(node){
         node = node.right
         while(node.left){
@@ -94,20 +175,3 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
   }
 }
-let tree = new Tree([10,20,30,40,50,60,70,80,90,100])
-prettyPrint(tree.root)
-/*
-for (let index = 0; index < 100; index++) {
-    tree.insert(Math.round(Math.random()*1000))
-    //tree.insert(index)
-}
-*/
-//tree.insert(55)
-//tree.delete(20)
-prettyPrint(tree.root)
-//console.log(tree.search(12).node)
-
-                    
-
-  
-                  
