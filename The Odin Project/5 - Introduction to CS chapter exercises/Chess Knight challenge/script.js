@@ -6,10 +6,10 @@ const Cell = (coord, color) => {
 const Knight = (coords) => {
     let coord = coords
     let possibleMoves = []
-    let div = document.createElement('div')
+    let HTML = document.createElement('div')
     const createHTML = () =>{
-        div.classList.add('knight')
-        return div
+        HTML.classList.add('knight')
+        return HTML
     }
     const definePossibleMoves = (startCoords = coord) => {
         possibleMoves = []
@@ -40,8 +40,18 @@ const Knight = (coords) => {
     const getCoords = () => {
         return coord
     }
-    div.addEventListener('click', showMoves)
-    return {getCoords, createHTML, move}
+
+    async function animateMoves(stepsArray){
+        for(let element in stepsArray){
+            let step = stepsArray[element]
+            await new Promise((resolve, reject) => setTimeout(resolve, 500));
+            move(step)
+            Board.createHTML()
+        }
+    }
+
+    HTML.addEventListener('click', showMoves)
+    return {getCoords, createHTML, move, HTML, animateMoves}
 }
 
 const Board = (() => {
@@ -103,8 +113,43 @@ const Board = (() => {
             }
         })
     }
+
+    const selectStart = () => {
+        createHTML()
+        let text = document.querySelector('#main-text')
+        text.textContent = 'Select the start position of the knight'
+        cells.forEach((cell) => {
+            cell.HTML.classList.add('cell--start-selection')
+            cell.HTML.addEventListener('click', () => {
+                knight.move(cell.coord)
+                selectEnd()
+            })
+        })
+    }
+    const selectEnd = () => {
+        createHTML()
+        let text = document.querySelector('#main-text')
+        text.textContent = 'Select the final goal of the knight'
+        cells.forEach((cell) => {
+            if(cell.coord[0] === knight.getCoords()[0] && cell.coord[1] === knight.getCoords()[1]){
+                cell.HTML.classList.add('cell--start')
+            }
+            
+            cell.HTML.classList.remove('cell--start-selection')
+            cell.HTML.classList.add('cell--end-selection')
+            cell.HTML.addEventListener('click', () => {
+                cell.HTML.classList.add('cell--end')
+                cells.forEach((inCell) => {
+                    inCell.HTML.classList.remove('cell--end-selection')
+                })
+                let steps = knightMoves(knight.getCoords(), cell.coord)
+                knight.animateMoves(steps)
+                text.textContent = 'Click select to do it again'    
+            })
+        })
+    }
     createHTML()
-    return{ cells, showMoves }
+    return{ cells, showMoves, selectStart, createHTML }
 })()
 
 const node = (coordsValue, parent = null) => { 
@@ -181,6 +226,7 @@ const KnightTravailsGraph = (startCoords) => {
             currentNode = currentNode.parent
         }
         printSteps(steps)
+        return steps
     }
     const printSteps = (stepsArray) => {
         console.log(`You made it in ${stepsArray.length} moves!  Here's your path:`)
@@ -203,13 +249,18 @@ function knightMoves(start, end){
     while(true){
         let endNode = graph.bmsSearch(end)
         if(endNode){
-            graph.circleBack(endNode)
-            break
+            steps = graph.circleBack(endNode)
+            return steps
         }else{
             graph.defineNewLevel()
         }
     }
 }
 
-
-knightMoves([7,7], [0,0])
+const SelectionModeHandler = (() => {
+    let selectionBtn = document.querySelector("#select")
+    selectionBtn.addEventListener('click', () => {
+        Board.selectStart()
+    })
+    
+})()
