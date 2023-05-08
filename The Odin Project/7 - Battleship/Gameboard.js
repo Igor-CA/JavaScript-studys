@@ -4,73 +4,55 @@ const Gameboard = () => {
     let board = []
     let ships = []
     const create = (() => {
-        board = []
-        for(let i=0; i<10; i++){
-            for(let j=0; j<10; j++){
-                board.push(cell(i, j))
-            }
+        for(let i=0; i<100; i++){
+                board.push({hited:false, hasShip:false})
         }
     })()
     const checkColisions = (coordsArray) => {
-        for(let coord in coordsArray){
-            let x = coordsArray[coord][0]
-            let y = coordsArray[coord][1]
-            if(x > 9 || x < 0 || y > 9 || y < 0) return true
-            for(let ship in ships){
-                for(let shipCoord in ships[ship].coords){
-                    let shipX = ships[ship].coords[shipCoord][0]
-                    let shipY = ships[ship].coords[shipCoord][1]
-                    if(x === shipX && y === shipY) return true                    
-                }
-            }
+        for(let index in coordsArray){
+            let coord = coordsArray[index]
+            let y = Math.floor(coord/10)
+            let x = coord % 10
+            if(y > 9) return true
+            if(x === 9 && index < coordsArray.length - 1) return true
+            if(board[coord].hasShip) return true
         }
         return false
     }
-    const placeShip = (shipLenght, initialCoords, shipOrientation) => {
-        let shipCoords = [initialCoords]
-        if(shipOrientation === 0){
-            for(let i=1; i<shipLenght; i++){
-                let x = initialCoords[0]
-                let y = initialCoords[1]
-                let newCoords = [x + i, y]
-                shipCoords.push(newCoords)
-            }
-        }else{
-            for(let i=1; i<shipLenght; i++){
-                let x = initialCoords[0]
-                let y = initialCoords[1]
-                let newCoords = [x, y + i]
-                shipCoords.push(newCoords)
-            }
-        }
 
+    const createLocationArray = (shipLength, initialCoords, axis) => { 
+        let shipCoords = [initialCoords]
+        for(let i=1; i<shipLength; i++){
+            if(axis === 'x')
+                shipCoords.push(initialCoords + i)
+            else
+                shipCoords.push(initialCoords + i * 10)
+        }
+        return shipCoords
+    }
+
+    const placeShip = (shipLength, initialCoords, shipOrientation) => {    
+        let shipCoords = createLocationArray(shipLength, initialCoords, shipOrientation)
         if(checkColisions(shipCoords)) return false
         
-        let newShip = Ship(shipLenght,shipCoords)
+        let newShip = Ship(shipLength,shipCoords)
         shipCoords.forEach(coord => {
-            let x = coord[0]
-            let y = coord[1]
-            let cellNumber = (x*10)+y
-            board[cellNumber].hasShip = newShip
+            board[coord].hasShip = newShip
         })
         ships.push(newShip)
         return true
     }
     
-    const receiveAttack = (coords) => {
+    const receiveAttack = (coord) => {     ///TODO
+        if(board[coord].hited)  return false
         
-        let x = coords[0]
-        let y = coords[1]
-        let cellNumber = (x*10)+y
-        if(board[cellNumber].hited)  return false
-        
-        if(board[cellNumber].hasShip){
-            return board[cellNumber].hasShip.hit(coords)
-        }
-        board.cell.hited = true
+        if(board[coord].hasShip)
+            board[coord].hasShip.hit(coord)
+        board[coord].hited = true
+        return true
 
     }
-    const allSunk = () => {
+    const allSunk = () => {         ///TODO
         for(let i in ships){
             let ship = ships[i]
             if(!ship.isSunk()) return false
@@ -79,10 +61,5 @@ const Gameboard = () => {
     }
     return {placeShip, board, receiveAttack, ships, allSunk}
 }
-const cell = (x, y) => {
-    let coords = [x, y]
-    let hited = false
-    let hasShip = false
-    return {coords, hited, hasShip}
-}
+
 export default Gameboard
