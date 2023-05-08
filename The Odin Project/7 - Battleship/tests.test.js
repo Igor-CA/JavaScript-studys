@@ -1,5 +1,6 @@
 import Ship from "./ship";
 import Gameboard from "./Gameboard"
+import Player from "./Player";
 describe('Ship tests', () => {
     
     let littleShip
@@ -97,20 +98,38 @@ describe('Gameboard tests', () => {
         board.receiveAttack([5,1])
         expect(board.allSunk()).toBe(true)
     })
-    /*
-    test('See if all ships have sunked', ()=> {
-        let lenght = 1
-        let orientation = 0
-        board.placeShip(lenght, [0,0], orientation)
-        board.placeShip(lenght, [2,2], orientation)
+})
+
+describe('Player tests', () => {
+    let player
+    let fakeBoard
+    beforeEach(() => {
+        player = Player('ThatGuy')
+        fakeBoard = {
+            board: [],
+            receiveAttack: jest.fn((coords) => {
+                let x = coords[0]
+                let y = coords[1]
+                let cellNumber = (x*10)+y
+                if(fakeBoard.board[cellNumber] === 'miss') return false
+                fakeBoard.board[cellNumber] = 'miss'
+                return true
+            }) 
+        }
+        const emptyBoard = []
+        for(let i=0; i<100; i++){
+            emptyBoard.push('empty')
+        }
+        fakeBoard.board = emptyBoard
     })
-    */
-    /*
-    test.only('Test collision', () => {
-        let lenght = 4
-        let orientation = 0
-        board.placeShip(lenght, [2,2], orientation)
-        expect(board.checkColisions([[2,2]])).toBe(true)
+    test('Create player with a name successfully', () => {
+        expect(player.playerName).toBe('ThatGuy')
     })
-    */
+    test('Attack a spot', () => {
+        expect(player.attack([0, 0], fakeBoard)).toBe(true)
+    })
+    test('Reject a attack at same spot', () => {
+        player.attack([0, 0], fakeBoard)
+        expect(player.attack([0, 0], fakeBoard)).toBe(false)
+    })
 })
