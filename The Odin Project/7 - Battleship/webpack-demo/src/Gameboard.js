@@ -8,13 +8,13 @@ const Gameboard = () => {
                 board.push({hited:false, hasShip:false})
         }
     })()
-    const checkColisions = (coordsArray) => {
+    const checkColisions = (coordsArray, orientattion) => {
         for(let index in coordsArray){
             let coord = coordsArray[index]
             let y = Math.floor(coord/10)
             let x = coord % 10
             if(y > 9) return true
-            if(x === 9 && index < coordsArray.length - 1) return true
+            if(x === 9 && index < coordsArray.length - 1 && orientattion === 'x') return true
             if(board[coord].hasShip) return true
         }
         return false
@@ -33,7 +33,7 @@ const Gameboard = () => {
 
     const placeShip = (shipLength, initialCoords, shipOrientation) => {    
         let shipCoords = createLocationArray(shipLength, initialCoords, shipOrientation)
-        if(checkColisions(shipCoords)) return false
+        if(checkColisions(shipCoords, shipOrientation)) return false
         
         let newShip = Ship(shipLength,shipCoords)
         shipCoords.forEach(coord => {
@@ -49,6 +49,7 @@ const Gameboard = () => {
         if(board[coord].hasShip)
             board[coord].hasShip.hit(coord)
         board[coord].hited = true
+        boardHTML = generateHTMLfromBoard()
         return true
 
     }
@@ -59,7 +60,33 @@ const Gameboard = () => {
         }
         return true
     }
-    return {placeShip, board, receiveAttack, ships, allSunk}
+
+    const generateHTMLfromBoard = () => {
+        let container = document.createElement('div')
+        //container.classList.add('board')
+        board.forEach((cell) => {
+            let cellHTML = document.createElement('div')
+            cellHTML.classList.add('cell')
+            if(cell.hited)
+                cellHTML.classList.add('cell--marked')
+            if(cell.hasShip)
+                cellHTML.classList.add('cell--ship')
+            if(cell.hited && cell.hasShip)
+                cellHTML.classList.add('cell--marked-ship')
+            container.appendChild(cellHTML)
+
+        })
+        return container.innerHTML
+    }
+
+    const updateHTML = () => {
+        boardHTML = generateHTMLfromBoard()
+        return boardHTML
+    }
+
+    let boardHTML = generateHTMLfromBoard()
+
+    return {placeShip, board, receiveAttack, ships, allSunk, updateHTML}
 }
 
 export default Gameboard

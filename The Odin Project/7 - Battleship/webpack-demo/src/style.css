@@ -3,8 +3,48 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
-
 body{
-    background-color: #444;
+    height: 100vh;
+    width: 100vw;
+}
+#game-container{
+    display: flex;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    justify-content: space-evenly;
+    translate: -50% -50%;
+}
+.board{
+    width: 40vw;
+    height: 40vw;
+    max-width: 80vh;
+    max-height: 80vh;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+.cell{
+    background-color: aqua;
+    border: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+    line-height: 200%;
+}
+.cell:hover{
+    border: 3px solid black;
+}
+.cell--marked::after{
+    content: 'X';
+    color: rgb(255, 0, 0);
+}
+.cell--marked-ship::after{
+    color: #0000ff;
+}.cell--ship{
+    border: 3px solid green;
+    background-color: rgb(177, 255, 131);
 }
