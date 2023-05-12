@@ -66,12 +66,22 @@ const Gameboard = () => {
         board.forEach((cell) => {
             let cellHTML = document.createElement('div')
             cellHTML.classList.add('cell')
-            if(cell.hited)
+            if(cell.hited){
                 cellHTML.classList.add('cell--marked')
+                let mark = document.createElement('div')
+                mark.classList.add('cell__mark')
+                cellHTML.appendChild(mark)
+            }
+            
+            if(cell.hasShip){
+                if(cell.hasShip.isSunk())
+                    cellHTML.classList.add('cell--sunked-ship')
+            }
             if(cell.hasShip && playerIsHuman)
                 cellHTML.classList.add('cell--ship')
-            if(cell.hited && cell.hasShip)
+            if(cell.hited && cell.hasShip){
                 cellHTML.classList.add('cell--marked-ship')
+            }
             container.appendChild(cellHTML)
 
         })

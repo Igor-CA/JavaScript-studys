@@ -62,13 +62,13 @@ body{
 }
 .end-screen{
     text-align: center;
-
     position: absolute;
     top: 50%;
     left: 50%;
     translate: -50% -50%;
 }
 .end-screen > *{
+    font-weight: bold;
     width: 100%;
     padding: 10px;
     margin: 5px;
@@ -86,28 +86,45 @@ body{
     height: 40vw;
     max-width: 80vh;
     max-height: 80vh;
-    border: 1px solid black;
     display: grid;
+    gap: 3px;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
 }
 .cell{
-    background-color: aqua;
-    border: 1px solid black;
+    border: 1px solid white;
     text-align: center;
     font-weight: bold;
-    line-height: 200%;
 }
 .cell:hover{
-    border: 3px solid black;
+    background-color: #65ff65;
+    transition: 200ms;
 }
-.cell--marked::after{
-    content: 'X';
-    color: rgb(255, 0, 0);
+.cell--marked:hover{
+    background-color: #ff5d5d;
+    transition: 200ms;
 }
-.cell--marked-ship::after{
-    color: #0000ff;
-}.cell--ship{
-    border: 3px solid green;
-    background-color: rgb(177, 255, 131);
+.cell--ship{
+    border: 2px solid white;
+    background-color: #3e7bff;
+}
+.cell--sunked-ship{
+    border: 1px solid white;
+    background-color: #ff5d5d;
+    transition: 500ms;
+}
+.cell__mark{
+    width: 50%;
+    height: 50%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.458);
+    translate: -50% -50%;
+}
+.cell--marked-ship > .cell__mark{
+    background-color: red;
+
 }
