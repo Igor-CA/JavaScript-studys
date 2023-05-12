@@ -6,7 +6,8 @@ const gamingLoop = (() =>{
     let currentPlayer
     let currentEnemy
 
-    const startGame = (name='Person') => {
+    const startGame = (name) => {
+        name = name.toUpperCase()
         person = Player(name)
         person.PlayerBoard.placeShip(5 ,4 , 'x')
         person.PlayerBoard.placeShip(4 ,19 , 'y')
@@ -14,7 +15,7 @@ const gamingLoop = (() =>{
         person.PlayerBoard.placeShip(3 ,54 , 'x')
         person.PlayerBoard.placeShip(2 ,82 , 'x')
         currentPlayer = person
-        DOMHandler.updateScreen(person)
+        DOMHandler.updateGameScreen(person)
 
         pc = Player()
         pc.PlayerBoard.placeShip(5 ,7 , 'y')
@@ -23,17 +24,19 @@ const gamingLoop = (() =>{
         pc.PlayerBoard.placeShip(3 ,40 , 'y')
         pc.PlayerBoard.placeShip(2 ,55 , 'y')
         currentEnemy = pc
-        DOMHandler.updateScreen(pc)
+        DOMHandler.updateGameScreen(pc)
         
         setTurnTo(person)
     }
 
     const endGame = (player) => {
+        let winner
         if(player.playerName){
-            console.log(`${player.playerName} won`)
+            winner = player.playerName
         }else{
-            console.log('PC won')
+            winner = 'PC'
         }
+        DOMHandler.changeToEndScreen(winner)
     }
 
     const togglePlayer = () => {
@@ -53,7 +56,7 @@ const gamingLoop = (() =>{
         enemyCells.forEach((cell, coord) => {
             cell.addEventListener('click', () => {
                 if(currentPlayer.attack(coord, currentEnemy)){
-                    DOMHandler.updateScreen(currentEnemy)
+                    DOMHandler.updateGameScreen(currentEnemy)
                     if(!currentEnemy.PlayerBoard.allSunk())
                         togglePlayer()
                     else

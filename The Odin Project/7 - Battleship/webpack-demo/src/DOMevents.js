@@ -1,8 +1,35 @@
 const DOMHandler = (() => {
+    let startScreenContainer = document.querySelector('#start-screen')
+    let playerNameInput = document.querySelector('.start-screen__name-input')
+    let startGameInput = document.querySelector('.start-screen__start-input')
+
+    let gameScreenContainer = document.querySelector('#game-screen')
     let playerBoardContainer = document.querySelector('#player-board')
     let pcBoardContainer = document.querySelector('#pc-board')
 
-    const updateScreen = (player) => {
+    let endScreenContainer = document.querySelector('#end-screen')
+    let endScreenText = document.querySelector('.end-screen__text')
+    let endScreenInput = document.querySelector('.end-screen__play-again')
+
+    const changeToGameScreen = () => {
+        gameScreenContainer.classList.remove('game-screen--invisible')
+        startScreenContainer.classList.add('start-screen--invisible')
+    }
+
+    const changeToEndScreen = (winner) => {
+        gameScreenContainer.classList.add('game-screen--invisible')
+        endScreenContainer.classList.remove('end-screen--invisible')
+        endScreenText.textContent = `${winner} WINS`
+    }
+
+    const backToStartScreen = () => {
+        endScreenContainer.classList.add('end-screen--invisible')
+        startScreenContainer.classList.remove('start-screen--invisible')
+    }
+
+    endScreenInput.addEventListener('click', backToStartScreen)
+
+    const updateGameScreen = (player) => {
         let boardHTML
         if(player.playerName){
             boardHTML = (player.PlayerBoard.updateHTML(true))
@@ -25,7 +52,7 @@ const DOMHandler = (() => {
         return cells
     }
     
-    return{updateScreen, returnBoardList}
+    return{playerNameInput, startGameInput, changeToGameScreen, changeToEndScreen, updateGameScreen, returnBoardList}
 })()
 
 export default DOMHandler
