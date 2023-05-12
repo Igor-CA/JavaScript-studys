@@ -61,15 +61,14 @@ const Gameboard = () => {
         return true
     }
 
-    const generateHTMLfromBoard = () => {
+    const generateHTMLfromBoard = (playerIsHuman) => {
         let container = document.createElement('div')
-        //container.classList.add('board')
         board.forEach((cell) => {
             let cellHTML = document.createElement('div')
             cellHTML.classList.add('cell')
             if(cell.hited)
                 cellHTML.classList.add('cell--marked')
-            if(cell.hasShip)
+            if(cell.hasShip && playerIsHuman)
                 cellHTML.classList.add('cell--ship')
             if(cell.hited && cell.hasShip)
                 cellHTML.classList.add('cell--marked-ship')
@@ -79,8 +78,8 @@ const Gameboard = () => {
         return container.innerHTML
     }
 
-    const updateHTML = () => {
-        boardHTML = generateHTMLfromBoard()
+    const updateHTML = (playerIsHuman=false) => {
+        boardHTML = generateHTMLfromBoard(playerIsHuman)
         return boardHTML
     }
 

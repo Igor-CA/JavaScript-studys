@@ -1,5 +1,4 @@
-import Player from "./Player";
-import DOMHandler from "./DOMevents";
+import gamingLoop from "./gamingLoop";
 import './style.css';
 
-DOMHandler.setTurnTo()
+gamingLoop.startGame('Igor')
