@@ -9,10 +9,15 @@
 </head>
 <body> 
     <h1 id="game-title">BATTLESHIP</h1>
-    <div id="start-screen" class="start-screen ">
+    <div id="start-screen" class="start-screen">
         <p class="start-screen__text">ENTER PLAYER NAME:</p>
         <input type="text" id="player-name" class="start-screen__name-input" placeholder="NAME" autocomplete="off">
         <button class="start-screen__start-input">START GAME</button>
+    </div>
+    <div id="board-placement-screen" class="board-placement-screen board-placement-screen--invisible">
+        <input type="checkbox" id="axis" class="board-placement-screen__checkbox">
+        <label for="axis" class="board-placement-screen__label">AXIS: X</label>
+        <div id="placement-board" class="placement-board"></div>
     </div>
     <div id="game-screen" class="game-screen game-screen--invisible">
         <div id="player-board" class="board"></div>

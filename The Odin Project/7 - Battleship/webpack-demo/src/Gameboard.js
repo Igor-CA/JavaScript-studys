@@ -31,9 +31,9 @@ const Gameboard = () => {
         return shipCoords
     }
 
-    const placeShip = (shipLength, initialCoords, shipOrientation) => {    
-        let shipCoords = createLocationArray(shipLength, initialCoords, shipOrientation)
-        if(checkColisions(shipCoords, shipOrientation)) return false
+    const placeShip = (shipLength, initialCoords, shipOrientation) => { 
+        let shipCoords = generateValidLocations(shipLength, initialCoords, shipOrientation)   
+        if(shipCoords === false) return false
         
         let newShip = Ship(shipLength,shipCoords)
         shipCoords.forEach(coord => {
@@ -41,6 +41,13 @@ const Gameboard = () => {
         })
         ships.push(newShip)
         return true
+    }
+
+    const generateValidLocations = (shipLength, initialCoords, shipOrientation) => {
+        let shipCoords = createLocationArray(shipLength, initialCoords, shipOrientation)
+        if(checkColisions(shipCoords, shipOrientation)) return false
+        
+        return shipCoords
     }
     
     const receiveAttack = (coord) => {     
@@ -95,7 +102,7 @@ const Gameboard = () => {
 
     let boardHTML = generateHTMLfromBoard()
 
-    return {placeShip, board, receiveAttack, ships, allSunk, updateHTML}
+    return {placeShip, board, receiveAttack, ships, allSunk, updateHTML, generateValidLocations}
 }
 
 export default Gameboard

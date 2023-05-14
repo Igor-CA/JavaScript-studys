@@ -7,14 +7,12 @@ const gamingLoop = (() =>{
     let currentPlayer
     let currentEnemy
 
-    const startGame = (name) => {
+    const startGame = (name, shipSpecs) => {
         name = name.toUpperCase()
         person = Player(name)
-        person.PlayerBoard.placeShip(5 ,4 , 'x')
-        person.PlayerBoard.placeShip(4 ,19 , 'y')
-        person.PlayerBoard.placeShip(3 ,35 , 'x')
-        person.PlayerBoard.placeShip(3 ,54 , 'x')
-        person.PlayerBoard.placeShip(2 ,82 , 'x')
+        shipSpecs.forEach(ship => {
+            person.PlayerBoard.placeShip(ship.size ,ship.initialCoord , ship.orientation)
+        })
         currentPlayer = person
         DOMHandler.updateGameScreen(person)
 
