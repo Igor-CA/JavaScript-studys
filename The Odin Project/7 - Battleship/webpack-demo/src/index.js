@@ -1,5 +1,6 @@
 import DOMHandler from "./DOMevents";
 import gamingLoop from "./gamingLoop";
+import IA from "./IA";
 import './style.css';
 
 DOMHandler.startGameInput.addEventListener('click', () => {

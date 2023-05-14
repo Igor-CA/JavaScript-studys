@@ -1,4 +1,5 @@
 import Player from "./Player"
+import IA from "./IA"
 import DOMHandler from "./DOMevents"
 const gamingLoop = (() =>{
     let pc
@@ -17,7 +18,7 @@ const gamingLoop = (() =>{
         currentPlayer = person
         DOMHandler.updateGameScreen(person)
 
-        pc = Player()
+        pc = IA()
         pc.PlayerBoard.placeShip(5 ,7 , 'y')
         pc.PlayerBoard.placeShip(4 ,11 , 'y')
         pc.PlayerBoard.placeShip(3 ,33 , 'y')
@@ -52,18 +53,28 @@ const gamingLoop = (() =>{
     }
 
     const setTurnTo = () => {
-        let enemyCells = DOMHandler.returnBoardList(currentEnemy)            
-        enemyCells.forEach((cell, coord) => {
-            cell.addEventListener('click', () => {
-                if(currentPlayer.attack(coord, currentEnemy)){
-                    DOMHandler.updateGameScreen(currentEnemy)
-                    if(!currentEnemy.PlayerBoard.allSunk())
-                        togglePlayer()
-                    else
-                        endGame(currentPlayer)
-                }
-            })
-        })
+        if(currentPlayer === person){
+            let enemyCells = DOMHandler.returnBoardList(currentEnemy)            
+            enemyCells.forEach((cell, coord) => {
+                cell.addEventListener('click', () => {
+                    if(currentPlayer.attack(coord, currentEnemy)){
+                        DOMHandler.updateGameScreen(currentEnemy)
+                        if(!currentEnemy.PlayerBoard.allSunk())
+                            togglePlayer()
+                        else
+                            endGame(currentPlayer)
+                    }
+                })
+            })            
+        }else{
+            pc.IAAttack(person.PlayerBoard)
+            DOMHandler.updateGameScreen(currentEnemy)
+            if(!currentEnemy.PlayerBoard.allSunk())
+                togglePlayer()
+            else
+                endGame(currentPlayer)
+        }
+            
     }
 
 
