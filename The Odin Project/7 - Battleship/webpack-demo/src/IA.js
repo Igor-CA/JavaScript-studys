@@ -22,7 +22,7 @@ const IA = () => {
 
     const validAdjacents = (left, right, up, down) => {
         let validOptions = []
-        if(left%10 !== 9 && left > 0)
+        if(left%10 !== 9 && left >= 0)
             validOptions.push(left)
         if(right%10 !== 0)
             validOptions.push(right)
@@ -76,12 +76,26 @@ const IA = () => {
     const IAAttack = (enemyBoard) => {
         if(attackSpotCloseToHitedSpot(enemyBoard) === false){
             attackRandomSpot(enemyBoard)
-        }
-           
+        }     
+    }
+
+    const placeRandomShip = (Gameboard, length) => {
+        let coords = []
+        let randomAxis = Math.floor((Math.random() * 2))
+        let axis = (randomAxis === 0)? 'x' : 'y'
+        Gameboard.board.forEach((cell, coord) => coords.push(coord))
+        let possibleSpots = coords.filter(coord => {
+            if(Gameboard.generateValidLocations(length, coord, axis))
+                return true
+            return false
+        })
+        
+        let randomValue = Math.floor(Math.random() * possibleSpots.length)
+        Gameboard.placeShip(length, possibleSpots[randomValue], axis)
     }
 
     return Object.assign(
-        {IAAttack}, 
+        {IAAttack, placeRandomShip}, 
         Player()
     )
 }

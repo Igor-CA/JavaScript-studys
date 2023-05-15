@@ -14,6 +14,7 @@ const boardPlacementScreen = (() => {
         fakePlayer = Player()
         updatePlacementScreen()
         addListeners()
+        shipSpecs = []
     }
 
     const toggleAxisLabel = () => {

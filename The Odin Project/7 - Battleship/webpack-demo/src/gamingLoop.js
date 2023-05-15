@@ -17,11 +17,11 @@ const gamingLoop = (() =>{
         DOMHandler.updateGameScreen(person)
 
         pc = IA()
-        pc.PlayerBoard.placeShip(5 ,7 , 'y')
-        pc.PlayerBoard.placeShip(4 ,11 , 'y')
-        pc.PlayerBoard.placeShip(3 ,33 , 'y')
-        pc.PlayerBoard.placeShip(3 ,40 , 'y')
-        pc.PlayerBoard.placeShip(2 ,55 , 'y')
+        pc.placeRandomShip(pc.PlayerBoard, 5)
+        pc.placeRandomShip(pc.PlayerBoard, 4)
+        pc.placeRandomShip(pc.PlayerBoard, 3)
+        pc.placeRandomShip(pc.PlayerBoard, 3)
+        pc.placeRandomShip(pc.PlayerBoard, 2)
         currentEnemy = pc
         DOMHandler.updateGameScreen(pc)
         
