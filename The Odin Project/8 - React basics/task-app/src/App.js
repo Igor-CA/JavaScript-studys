@@ -14,8 +14,11 @@ class App extends Component {
         text:'',
         number: 1,
         id: uniqid()
-      }
+      },
+      editing: false
     }
+    this.edit = this.edit.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
     this.deleteTask = this.deleteTask.bind(this)
     this.handleTextInput = this.handleTextInput.bind(this)
     this.handleAddButton = this.handleAddButton.bind(this)
@@ -37,6 +40,42 @@ class App extends Component {
     })
   }
 
+  handleEdit(id){
+    console.log(id)
+    this.setState({
+      task:{
+        text: this.state.tasks.filter(task => task.id === id).map(task => task.text)[0],
+        number: this.state.tasks.filter(task => task.id === id).map(task => task.number)[0],
+        id: this.state.tasks.filter(task => task.id === id).map(task => task.id)[0]
+      },
+      editing: this.state.tasks.filter(task => task.id === id).map(task => task.number)[0],
+    })
+  }
+  edit(e){
+    e.preventDefault()
+    let editedTask = this.state.task
+    let newTasks = this.state.tasks.map(task => {
+      if(task.number === this.state.editing){
+        task.text = editedTask.text
+        return task         
+      }
+      else  
+        return task
+    })
+    console.log(editedTask)
+    console.log(newTasks)
+    console.log(this.state.tasks)
+    this.setState({
+      tasks: newTasks,
+      task: {
+        text: e.target.value,
+        number: (this.state.tasks.length + 2),
+        id: uniqid()
+      },
+      editing: false
+    })
+  }
+
   handleTextInput(e){
     this.setState({
       task:{
@@ -44,7 +83,7 @@ class App extends Component {
         number: (this.state.tasks.length + 1),
         id: this.state.task.id
       }
-    })    
+    })         
   }
 
   handleAddButton(e){
@@ -72,9 +111,12 @@ class App extends Component {
             value={task.text} 
             onChange={this.handleTextInput} >
           </input>
-          <button onClick={this.handleAddButton}>Add task</button>       
+          {(this.state.editing === false)?
+            <button onClick={this.handleAddButton}>Add task</button>:    
+            <button onClick={this.edit}>Edit task {this.state.editing}</button>    
+          }
         </form>
-        <Task tasks={tasks} event={this.deleteTask}/>   
+        <Task tasks={tasks} event={this.deleteTask} edit={this.handleEdit}/>   
       </div>
     );    
   }

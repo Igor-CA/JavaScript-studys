@@ -1,7 +1,7 @@
 const Task = (props) => {
 
 
-    let {tasks, event} = props
+    let {tasks, event, edit} = props
     return (
         <ul>
             {tasks.map((task) => {
@@ -9,6 +9,7 @@ const Task = (props) => {
                 <div key={task.id}>
                     <li>{task.number + ' - ' + task.text}</li>
                     <button onClick={ () => {event(task.id)}}>Delete</button>
+                    <button onClick={ () => {edit(task.id)}}>Edit</button>
                 </div> 
                 )
             })}
