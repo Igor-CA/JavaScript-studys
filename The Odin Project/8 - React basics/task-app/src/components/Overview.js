@@ -1,15 +1,19 @@
-import { Component } from "react";
+const Task = (props) => {
 
-class Task extends Component{
-    render(){
-        return (
-            <ul>
-                {this.props.tasks.map((task) => {
-                    return <li>{task.text}</li>
-                })}
-            </ul>
-        )
-    }
+
+    let {tasks, event} = props
+    return (
+        <ul>
+            {tasks.map((task) => {
+                return(
+                <div key={task.id}>
+                    <li>{task.number + ' - ' + task.text}</li>
+                    <button onClick={ () => {event(task.id)}}>Delete</button>
+                </div> 
+                )
+            })}
+        </ul>
+    )
 }
 
 export default Task
