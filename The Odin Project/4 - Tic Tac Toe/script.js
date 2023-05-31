@@ -1,12 +1,15 @@
 const Game = () =>{
     let board = []
     let currentPlayer = 'x'
+    let winner = ''
 
     for(let i = 0; i < 9; i++){
         board.push(Cell());
     }
     
     const getCurrentPlayer = () => currentPlayer
+
+    const getWinner = () => winner
 
     const playRound = (index) =>{
         if(board[index].getValue() === null){
@@ -18,6 +21,14 @@ const Game = () =>{
 
     const togglePlayer = () =>{
         currentPlayer = (currentPlayer === 'x')? 'o' : 'x' 
+        screenControler.showPlayerTurn()
+    }
+
+    const resetBoard = () => {
+        board.forEach( cell => {
+            currentPlayer = 'x'
+            cell.addValue(null)
+        })
     }
 
     const getBoard = () => board
@@ -52,7 +63,8 @@ const Game = () =>{
         }
 
         if(roundWon){
-            screenControler.showWhinner()
+            winner = currentPlayer
+            screenControler.showResult()
         }
 
          //check for tie
@@ -60,12 +72,13 @@ const Game = () =>{
             return square.getValue() !== null;
         })
         if(filledSquares.length == 9){
-            screenControler.showTie()
+            winner = 'Tie'
+            screenControler.showResult()
         }
 
     }
 
-    return{getBoard, getCurrentPlayer, checkForWin, playRound}
+    return{getBoard, getCurrentPlayer, getWinner, checkForWin, playRound, resetBoard}
 }
 const Cell = ()=>{
     let value = null
@@ -82,10 +95,25 @@ const Cell = ()=>{
 const screenControler = (() =>{
     let game = Game()
     let boardDiv = document.querySelector('#board')
+    let resetButton = document.querySelector('#resetButton')
     
+    const startNewGame = () => {
+        let boardCells = document.querySelectorAll('.cell')
+        let board = game.getBoard()
+        game.resetBoard()        
+        boardCells.forEach( cell => {
+            let index = cell.dataset.cord
+            cell.textContent = board[index].getValue()
+        })
+        resetButton.classList.toggle('invisible')
+        let header = document.querySelector('#winner')
+        header.textContent = '' 
+    }
+
     const init = () => {
         createBoard()
         addListerners()
+        showPlayerTurn()
     }
     
     const createBoard = ()=>{
@@ -110,16 +138,33 @@ const screenControler = (() =>{
         })
     }
 
-    const showWhinner = () => {
-        let header = document.querySelector('#turn')
-        header.textContent = `Jogador '${game.getCurrentPlayer()}' Ganhou`
+    const showResult = () => {
+        let header = document.querySelector('#winner')
+        if(game.getWinner() === 'Tie'){
+            header.textContent = `It's a Tie`
+        }else{
+            header.textContent = `Jogador '${game.getCurrentPlayer()}' Ganhou`
+        }
+        hidePlayerTurn()
+        toggleResetVisibility()
     }
-    const showTie = () => {
-        let header = document.querySelector('#turn')
-        header.textContent = `It's a Tie`
+
+    const showPlayerTurn = () => {
+        let turnMensage = document.querySelector("#playerTurn")
+        turnMensage.textContent = `Player '${game.getCurrentPlayer()}' turn`
     }
+
+    const hidePlayerTurn = () => {
+        let turnMensage = document.querySelector('#playerTurn')
+        turnMensage.style.display = 'none'
+    }
+
+    const toggleResetVisibility = () =>{
+        resetButton.classList.toggle('invisible')
+    }
+
 
     init()
-    return{ showWhinner, showTie }
+    resetButton.addEventListener('click', startNewGame)
+    return{ showResult, showPlayerTurn }
 })();
-
