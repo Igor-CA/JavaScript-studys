@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../src/style.css">
+    <title>BattleShip</title>
+</head>
+<body> 
+    <h1 id="game-title">BATTLESHIP</h1>
+    <div id="start-screen" class="start-screen">
+        <p class="start-screen__text">ENTER PLAYER NAME:</p>
+        <input type="text" id="player-name" class="start-screen__name-input" placeholder="NAME" autocomplete="off">
+        <button class="start-screen__start-input">START GAME</button>
+    </div>
+    <div id="board-placement-screen" class="board-placement-screen board-placement-screen--invisible">
+        <input type="checkbox" id="axis" class="board-placement-screen__checkbox">
+        <label for="axis" class="board-placement-screen__label">AXIS: X</label>
+        <div id="placement-board" class="placement-board"></div>
+    </div>
+    <div id="game-screen" class="game-screen game-screen--invisible">
+        <div id="player-board" class="board"></div>
+        <div id="pc-board" class="board"></div>
+    </div>
+    <div id="end-screen" class="end-screen end-screen--invisible">
+        <h2 class="end-screen__text"></h2>
+        <button class="end-screen__play-again">PLAY AGAIN</button>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>

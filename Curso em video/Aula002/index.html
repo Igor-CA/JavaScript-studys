@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olá, mundo!</title>
+    <style>
+        body{
+            background-color: rgb(66, 66, 248);
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        div#button{
+            width: 50%;
+            height: 200px;
+            border: 1px solid black;
+            margin: auto;
+            background-color: lightblue;
+            line-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World!</h1>
+    <p>
+        OMG OMG!!!!!!!!!!!!
+    </p>
+    <p>
+        OH OH THE MYSERY!!!!!!!!!!!!
+    </p>
+    <div id="button" onclick="clicked()"></div>
+    <script>
+        p = document.getElementsByTagName('p')[0]
+        p.style.color = 'darkblue'
+        button = document.getElementById('button')
+        button.addEventListener('mouseout', out)
+        button.addEventListener('mouseenter', in_box)
+        function clicked(){
+            button.style.background = 'blue'
+            button.innerText = 'clicked'
+        }
+        function out(){
+            button.style.background = 'lightblue'
+            button.innerText = 'out'
+        }
+        function in_box(){
+            button.style.background = 'darkblue'
+            button.innerText = 'in'
+        }
+    </script>
+</body>
+</html>
